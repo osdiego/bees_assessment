@@ -6,7 +6,10 @@ pd.set_option('display.width', 1000)
 pd.set_option('max_colwidth', 400)
 
 if __name__ == '__main__':
-    assets_folder = './assets/'
+    # To run the script inside the task_1 folder
+    assets_folder = '../assets/'
+    # to run it directly on the root folder
+    # assets_folder = './assets/'
 
     # Read csv files into pandas DataFrames to better understanding
     df_bg_map = pd.read_csv(f'{assets_folder}background_mapping.csv')
