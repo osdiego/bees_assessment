@@ -2,7 +2,7 @@
 
 ## Short description of the task
 
-In this task is requested to demonstrate the package create on Task 2 by creating a python script to treat the same data treated in Task 1.
+In this task is requested to demonstrate the package create on ***Task 2*** by creating a python script to treat the same data treated in ***Task 1***.
 
 ## Instructions to run the code
 
@@ -15,4 +15,4 @@ TODO
 
 ## Planed actions
 
-- Create a python script similar of the Task 1, but using the package
+- Create a python script similar of the ***Task 1***, but using the package
