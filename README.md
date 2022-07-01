@@ -7,6 +7,11 @@ Private repository that contains the code for the Streetbees Data Engineer - tec
 Looking at the folder structure, you will be able to see 3 folders, one for each task.
 The instructions to assess each of the tasks are on the README.md of the respective folders.
 
+### Additional notes
+
+- The master branch of the repo is called "main", following the community most recent practices;
+- All the commits were done directly on the main branch to save some time and preserve the history of commits as requested, but in a real environment GitFlow would be followed and the PR's and squashes would be properly used.
+
 ### Files / folders on the root of the repo
 
 - [.vscode](.vscode): the settings for the workspace;
