@@ -21,7 +21,7 @@ In this task is requested to create a data pipeline to do some cleaning on CSV f
 
 ### Create functions for each of the following bullets
 
-- Merge background and logs DataFrames (rename columns in **df_bg_1** according to **df_bg_2** columns);
+- "Merge" (it needs actually to be concatenated) background and logs DataFrames (rename columns in **df_bg_1** according to **df_bg_2** columns);
 - Set gender column to lowercase;
 - Set location names all to codes (PyCountry?);
 - Fix mismatched user age groups;
@@ -30,13 +30,14 @@ In this task is requested to create a data pipeline to do some cleaning on CSV f
 - Remove brackets from **Questions_135633_and_who_are_you_sharing_your_home_with** column values;
 - Merge duplicated values in the same cell (`["a", "a"]` -> `["a"]`).
 
-## Problems found
+## Problems found / Action taken
 
 - The headers of the background_mapping.csv file needed treatment (trim white spaces at the end of the string);
 - The columns in the mapping file are actually switched:
   - "Project 1 Question" should be "Project 2 Question";
   - "Project 2 Question" should be "Project 1 Question".
 - The order of the columns is not always the same, so they all were sorted to guarantee proper comparison.
+- The project 2 was used as baseline to set the name of the final columns as the docx says it has the most recent data (what suggests that these are the right names to be used, despite the questions identifiers of the different columns being higher on the project 1 file)
 
 ## Dictionary of abbreviations
 

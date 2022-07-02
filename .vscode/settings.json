@@ -1,9 +1,12 @@
 {
     "cSpell.words": [
         "colwidth",
+        "dataframes",
         "Docstrings",
+        "levelname",
         "pdoc",
         "pytest",
-        "Streetbees"
+        "Streetbees",
+        "TODOS"
     ]
 }
