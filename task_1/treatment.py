@@ -1,59 +1,10 @@
 import logging
-from typing import Callable
+from pprint import pprint
 
 import pandas as pd
 
-
-def concat_dataframes(
-    df1: pd.DataFrame,
-    df2: pd.DataFrame,
-    rename_cols: dict[str, str] = None,
-) -> pd.DataFrame:
-    '''Concatenate the provide dataframes. It also renames the columns of the
-    first df according to the provided dictionary.
-
-    Args:
-        df1 (pd.DataFrame): the df which columns will be renamed
-        df2 (pd.DataFrame): the df which column names will be preserved
-        rename_cols (dict[str, str], optional): a dictionary structured as
-            {'column_to_be_renamed': 'new_column_name'}. Defaults to None.
-
-    Returns:
-        pd.DataFrame: the concatenated df, with the column names of the second df
-    '''
-
-    # The TODOS need to be handled when creating the package
-    # TODO: verify that the number of columns of both dfs match
-
-    df1_renamed = df1.rename(columns=rename_cols) if rename_cols else df1
-
-    # TODO: verify that the name of the columns of both dfs match
-    # TODO: an exception type may need to be created to raise that
-
-    df_concatenated = pd.concat([df1_renamed, df2])
-
-    return df_concatenated
-
-
-def clean_columns_values(
-    df: pd.DataFrame,
-    columns: list[str],
-    operation: Callable = str.capitalize,
-    replaces: dict[str, dict[str, str]] = dict(),
-) -> pd.DataFrame:
-
-    local_df = df.copy()
-    for col in columns:
-        local_df[col] = local_df[col].apply(operation)
-
-        if col in replaces:
-            words_to_replace = replaces[col]
-
-            # w stands for "word"
-            local_df[col] = local_df[col].apply(
-                lambda w: words_to_replace[w] if w in words_to_replace else w)
-
-    return local_df
+from helpers import (clean_columns_values, concat_dataframes,
+                     fix_country_columns)
 
 
 def main():
@@ -117,11 +68,20 @@ def main():
         df=df_bg, columns=[col_gender], replaces=map_to_replace)
     logger.debug(set(df_bg[col_gender].values))
 
+    # Set all location names to codes
+    # 1º: verify the severity of the problem
+    logger.debug(sorted(set(df_logs['location_name'].values)))
+
+    # 2ª: fix the problem - small note on conversion UK -> GB as this is the ISO
+    df_logs = fix_country_columns(df_logs, columns=['location_name'])
+    logger.debug(sorted(set(df_logs['location_name'].values)))
+
     logger.info('The end.')
 
 
-# As best practice
+# As best practice and to avoid running code unintentionally
 if __name__ == '__main__':
+    # Configure the logs is the first thing on the file
     format_str = '%(asctime)s - %(levelname)s - %(message)s'
     logging.basicConfig(level=logging.DEBUG, format=format_str)
 
@@ -139,6 +99,7 @@ if __name__ == '__main__':
     # Add handlers to the logger
     logger.addHandler(f_handler)
 
+    # Configure the settings of pandas so it can be better printed
     pd.set_option('display.max_rows', 500)
     pd.set_option('display.max_columns', 500)
     pd.set_option('display.width', 1000)

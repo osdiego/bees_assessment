@@ -5,6 +5,7 @@
         "Docstrings",
         "levelname",
         "pdoc",
+        "pycountry",
         "pytest",
         "Streetbees",
         "TODOS"
