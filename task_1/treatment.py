@@ -3,8 +3,9 @@ from pprint import pprint
 
 import pandas as pd
 
-from helpers import (clean_columns_values, concat_dataframes,
-                     fix_country_columns, merge_string_columns)
+from helpers import (clean_columns_values, clean_dict_column,
+                     concat_dataframes, fix_country_columns,
+                     merge_string_columns)
 
 
 def main():
@@ -49,6 +50,16 @@ def main():
     is_logs_schemas_equal = sorted(list(df_logs_1)) == sorted(list(df_logs_2))
     logger.debug(f'Logs schemas are equal? Answer: {is_logs_schemas_equal}')
 
+    '''For performance reasons, it is necessary to do some cleaning on the
+    datasets before doing the merge'''
+    # Check the real problem in the column formatted as dictionary
+    # pprint(sorted(set(df_logs_1['level2dish_coded'].values)))
+
+    # Extract the desired value from the column
+    df_logs_1 = clean_dict_column(df_logs_1, 'level2dish_coded')
+    # What could be also achieved using the insecure method:
+    # df_logs_1 = clean_dict_column_insecure(df_logs_1, 'level2dish_coded', 'dish')
+
     # Merge dfs - the project 2 columns will be used as final column names
     map_bg_cols = dict(zip(prj_1_cols, prj_2_cols))
     df_logs = concat_dataframes(df1=df_logs_1, df2=df_logs_2)
@@ -81,8 +92,8 @@ def main():
     # pprint(sorted(set(df_logs.columns)))
 
     '''This shows that the questions_134999_where_are_you_eating_at_the_moment
-    is duplicated on df_logs and will need to be merged, and now it can be done
-    '''
+    column is duplicated on df_logs and will need to be merged, and now it can
+    be done'''
     df_logs = merge_string_columns(
         df=df_logs,
         column_a='questions_134999_where_are_you_eating_at_the_moment',

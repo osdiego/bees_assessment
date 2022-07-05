@@ -1,3 +1,4 @@
+import json
 from typing import Callable, Sequence
 
 import pandas as pd
@@ -172,5 +173,68 @@ def merge_string_columns(
 
     local_df[column_a] = df[[column_a, column_b]].apply(
         merge_only_strings, axis=1)
+
+    return local_df
+
+
+def clean_dict_column(df: pd.DataFrame, column: str) -> pd.DataFrame:
+    '''Creates a copy of the provided DataFrame, cleaning the string column
+    formatted as dict, getting only the value of the first key of the dict.
+    Works only if the value of the key is a list.
+
+    Args:
+        df (pd.DataFrame): the original DataFrame
+        column (str): the column name
+
+    Returns:
+        pd.DataFrame: the cleaned DataFrame
+
+    eval() function could be used to transform the strings into dictionaries
+    an extract the desired key from there, but assuming that the string's
+    content may not come from a trusted source, it is better to use the index
+    of the string as a way to extract the desired values.
+
+    For that it was assumed that the structure will always be the same:
+    a dictionary with only 1 key and the value always a list.
+
+    In any case, it is also provided another method
+    (clean_dict_column_insecure), to show the alternative solution.
+    '''
+
+    local_df = df.copy()
+
+    local_df[column] = local_df[column].apply(
+        lambda s: s[s.find('['):s.find(']')+1])
+
+    return local_df
+
+
+def clean_dict_column_insecure(
+    df: pd.DataFrame,
+    column: str,
+    key: str,
+) -> pd.DataFrame:
+    '''Creates a copy of the provided DataFrame, cleaning the string column
+    formatted as dict, getting the value of the provided key.
+
+    Args:
+        df (pd.DataFrame): the original DataFrame
+        column (str): the column name
+        key (str): the key from where to get the return value
+
+    Returns:
+        pd.DataFrame: the cleaned DataFrame
+
+    As explained in the method "clean_dict_column", this is not secure because
+    it uses the eval() method, that tries to turn any string in Python code,
+    which is clearly an insecure operation. Nevertheless, it is a more powerful
+    solution, once it provides the possibility to extract the value of a
+    specific key and do not rely on the type of the value of the key.
+    '''
+
+    local_df = df.copy()
+
+    local_df[column] = local_df[column].apply(
+        lambda s: json.dumps(eval(s)[key]))
 
     return local_df

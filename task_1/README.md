@@ -6,6 +6,8 @@ In this task is requested to create a data pipeline to do some cleaning on CSV f
 
 ### Additional notes
 
+- For performance reasons, it is necessary to do some cleaning on the datasets before doing the merge, that is why the actions on the Task 1 script does not follow the order of the bullet points in the docx;
+- Most of the logic is being kept on the scrip for analysis, but not all, in an attempt to keep it as clear as possible and still give the opportunity for it to be properly assessed. Some **logger** and **pprint** statements are also being kept, sometimes commented out, to also make it easier to assess the code and the line of thinking;
 - A data pipeline is not exactly what was build. The created script is "simply" a set of actions to understand and clean the data;
 - A pipeline would probably:
   - save different files along the process to avoid losing the progress during breaking actions;
@@ -52,8 +54,9 @@ In this task is requested to create a data pipeline to do some cleaning on CSV f
   1. Delete some age groups and set the rows that use these deleted groups to a most common overlapping age group, what would possibly put a person in the wrong age group;
   2. Merge all the overlapping age groups, what would cause the existence of a "meaningless" age group with a too large range (too generic);
   3. Put a person in multiple existent age groups (which would make it harder to know the original range);
-  4. Create sub groups and put a person in multiple shorter age groups (e.g. [25-34] would be [25, 26-34], [26-35] would be [26-34, 35], [35-44] would be [35, 36-44], etc.) - probably the best presented solution.
-- The country code used on the dataset for United Kingdom was **UK**, but that is not the ISO code for the country, so it was updated to **GB**
+  4. Create sub groups and put a person in multiple shorter age groups (e.g. [25-34] would be [25, 26-34], [26-35] would be [26-34, 35], [35-44] would be [35, 36-44], etc.) - probably the best presented solution;
+- The country code used on the dataset for United Kingdom was **UK**, but that is not the ISO code for the country, so it was updated to **GB**;
+- The duplicated column on the logs dataset is called "**l**evel2dish_coded", not "**L**evel2dish_coded".
 
 ## Dictionary of abbreviations
 

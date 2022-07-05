@@ -11,7 +11,9 @@ The instructions to assess each of the tasks are on the README.md of the respect
 
 - The master branch of the repo is called ***main***, following the community most recent practices;
 - All the commits were done directly on the main branch to save some time and preserve the history of commits as requested, but in a real environment GitFlow would be followed and the PR's and squashes would be properly used;
-- The Python Docstrings style chosen for the project was the one from Google, as this is one of the simplest ones to read, but any other could be used in case of need.
+- The written code tries to follow at risk the guidelines of the PEPs, and if something was forgotten I apologize, I did my best with the given time;
+- The Python Docstrings style chosen for the project was the one from Google, as this is one of the simplest ones to read, but any other could be used in case of need;
+- Multiline statements usually ends with a comma so it is easier to see the difference in possible future Pull Requests.
 
 ### Files / folders on the root of the repo
 
