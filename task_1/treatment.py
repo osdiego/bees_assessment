@@ -4,7 +4,7 @@ from pprint import pprint
 import pandas as pd
 
 from helpers import (clean_columns_values, concat_dataframes,
-                     fix_country_columns)
+                     fix_country_columns, merge_string_columns)
 
 
 def main():
@@ -76,6 +76,18 @@ def main():
     df_logs = fix_country_columns(df_logs, columns=['location_name'])
     logger.debug(sorted(set(df_logs['location_name'].values)))
 
+    # Verify the existence of duplicated columns on the DataFrames
+    # pprint(sorted(set(df_bg.columns)))
+    # pprint(sorted(set(df_logs.columns)))
+
+    '''This shows that the questions_134999_where_are_you_eating_at_the_moment
+    is duplicated on df_logs and will need to be merged, and now it can be done
+    '''
+    df_logs = merge_string_columns(
+        df=df_logs,
+        column_a='questions_134999_where_are_you_eating_at_the_moment',
+        column_b='questions_134999_where_are_you_eating_at_the_moment.1')
+
     logger.info('The end.')
 
 
@@ -99,7 +111,7 @@ if __name__ == '__main__':
     # Add handlers to the logger
     logger.addHandler(f_handler)
 
-    # Configure the settings of pandas so it can be better printed
+    # Configure the settings of pandas so the DataFrames can be better printed
     pd.set_option('display.max_rows', 500)
     pd.set_option('display.max_columns', 500)
     pd.set_option('display.width', 1000)

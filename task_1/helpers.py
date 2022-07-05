@@ -1,5 +1,4 @@
-from copy import deepcopy
-from typing import Callable
+from typing import Callable, Sequence
 
 import pandas as pd
 import pycountry
@@ -129,5 +128,49 @@ def fix_country_columns(
     for col in columns:
         local_df[col] = local_df[col].apply(
             lambda country: format_country(country, format))
+
+    return local_df
+
+
+def merge_only_strings(array_of_values: Sequence, separator=' / ') -> str:
+    '''Returns a string from an array of values, concatenating only the
+        non-empty unique strings (ignores also nan values)
+
+    Args:
+        array_of_values (Sequence): the array to filter and join
+        separator (str, optional): the separator to use to join the values in
+            case the cleaned array has more than 1 value. Defaults to ' / '.
+
+    Returns:
+        str: the final string
+    '''
+
+    unique_non_null_values = {
+        v for v in array_of_values if isinstance(v, str) and v.strip()}
+
+    return separator.join(unique_non_null_values)
+
+
+def merge_string_columns(
+        df: pd.DataFrame,
+        column_a: str,
+        column_b: str,
+) -> pd.DataFrame:
+    '''Creates a copy of the provided DataFrame, removing the duplicated column
+
+    Args:
+        df (pd.DataFrame): the original DataFrame
+        column_a (str): the name of the column to preserve
+        column_b (str): the name of the column to be deleted
+
+    Returns:
+        pd.DataFrame: the final DataFrame, with just column_a, but with the
+            values from both columns merged
+    '''
+
+    local_df = df.copy()
+
+    local_df[column_a] = df[[column_a, column_b]].apply(
+        merge_only_strings, axis=1)
 
     return local_df
