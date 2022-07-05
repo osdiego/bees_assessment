@@ -24,14 +24,7 @@ def concat_dataframes(
             second DataFrame
     '''
 
-    # The TODOS need to be handled when creating the package
-    # TODO: verify that the number of columns of both dfs match
-
     df1_renamed = df1.rename(columns=rename_cols) if rename_cols else df1
-
-    # TODO: verify that the name of the columns of both dfs match
-    # TODO: an exception type may need to be created to raise that
-
     df_concatenated = pd.concat([df1_renamed, df2])
 
     return df_concatenated
@@ -236,5 +229,62 @@ def clean_dict_column_insecure(
 
     local_df[column] = local_df[column].apply(
         lambda s: json.dumps(eval(s)[key]))
+
+    return local_df
+
+
+def clean_stringified_list_insecure(list_as_string: str) -> str:
+    '''Creates a copy of the provided stringified list, where the elements are
+    the original ones if they are not lists and the elements inside the elements
+    if the elements itself are lists. It also remove elements that are empty
+    strings.
+
+    Args:
+        list_as_string (str): the stringified list to clean
+
+    Returns:
+        str: the cleaned copy of the original string
+    '''
+
+    list_as_list = eval(list_as_string)
+    temp_set = set()
+
+    for value in list_as_list:
+        if isinstance(value, list):
+            for inner_value in value:
+                temp_set.add(inner_value)
+        else:
+            temp_set.add(value)
+
+    return json.dumps([v for v in temp_set if v])
+
+
+def clean_braces_insecure(df: pd.DataFrame, column: str) -> pd.DataFrame:
+    '''Creates a copy of the provided DataFrame, cleaning the stringified column
+    provided, where the final string representation is a cleaned list, without
+    inner lists or empty strings.
+
+    Args:
+        df (pd.DataFrame): the original DataFrame
+        column (str): the name of the column to be cleaned
+
+    Returns:
+        pd.DataFrame: the cleaned DataFrame
+
+    Working simply on the indexes of the string is not optimal here as the
+    use of eval() will make it possible to clean other problems than the brace,
+    like the object having an empty string or a list with an empty string.
+
+    The use of the eval() is insecure, but was chosen as this is a closed
+    environment and the dataset it so small that its content can be verified.
+    '''
+
+    local_df = df.copy()
+
+    local_df[column] = local_df[column].apply(
+        lambda s: clean_stringified_list_insecure(
+            s.strip().replace('{', '[').replace('}', ']')
+        )
+    )
 
     return local_df

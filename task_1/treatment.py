@@ -3,18 +3,18 @@ from pprint import pprint
 
 import pandas as pd
 
-from helpers import (clean_columns_values, clean_dict_column,
-                     concat_dataframes, fix_country_columns,
+from helpers import (clean_braces_insecure, clean_columns_values,
+                     clean_dict_column, concat_dataframes, fix_country_columns,
                      merge_string_columns)
 
 
 def main():
+    # ||| Step 1 |||: read csv files into pandas DataFrames to better understanding
     # To run the script inside the task_1 folder
     assets_folder = '../assets/'
     # to run it directly on the root folder
     # assets_folder = './assets/'
 
-    # Read csv files into pandas DataFrames to better understanding
     df_bg_map = pd.read_csv(f'{assets_folder}background_mapping.csv')
     clean_columns = {c: c.strip() for c in df_bg_map}
     df_bg_map.rename(columns=clean_columns, inplace=True)
@@ -25,6 +25,7 @@ def main():
     df_logs_1 = pd.read_csv(f'{assets_folder}project_1_logs.csv')
     df_logs_2 = pd.read_csv(f'{assets_folder}project_2_logs.csv')
 
+    # ||| Step 2 |||: check the difference between datasets
     # Verify the difference between the background df schemas
     is_bg_schemas_equal = sorted(list(df_bg_1)) == sorted(list(df_bg_2))
     logger.debug(
@@ -50,6 +51,7 @@ def main():
     is_logs_schemas_equal = sorted(list(df_logs_1)) == sorted(list(df_logs_2))
     logger.debug(f'Logs schemas are equal? Answer: {is_logs_schemas_equal}')
 
+    # ||| Step 3 |||: solve problem on column "level2dish_coded"
     '''For performance reasons, it is necessary to do some cleaning on the
     datasets before doing the merge'''
     # Check the real problem in the column formatted as dictionary
@@ -60,13 +62,22 @@ def main():
     # What could be also achieved using the insecure method:
     # df_logs_1 = clean_dict_column_insecure(df_logs_1, 'level2dish_coded', 'dish')
 
-    # Merge dfs - the project 2 columns will be used as final column names
+    # ||| Step 4 |||: solve problem on column "questions_135633_and_who_are_you_sharing_your_home_with"
+    # check the real problem in the column
+    column_135633 = 'questions_135633_and_who_are_you_sharing_your_home_with'
+    # pprint(sorted(set(df_bg_1[column_135633].values)))
+    # not all values has the brace problem, so the function created handles that
+    df_bg_1 = clean_braces_insecure(df_bg_1, column_135633)
+    # pprint(sorted(set(df_bg_1[column_135633].values)))
+
+    # ||| Step 5 |||: merge DataFrames
+    # the project 2 columns will be used as final column names
     map_bg_cols = dict(zip(prj_1_cols, prj_2_cols))
     df_logs = concat_dataframes(df1=df_logs_1, df2=df_logs_2)
     df_bg = concat_dataframes(
         df1=df_bg_1, df2=df_bg_2, rename_cols=map_bg_cols)
 
-    # Fix genders spelt / capitalized differently
+    # ||| Step 6 |||: fix genders spelt / capitalized differently
     col_gender = 'questions_135556_what_is_your_gender'
     df_bg = clean_columns_values(df=df_bg, columns=[col_gender])
 
@@ -79,7 +90,7 @@ def main():
         df=df_bg, columns=[col_gender], replaces=map_to_replace)
     logger.debug(set(df_bg[col_gender].values))
 
-    # Set all location names to codes
+    # ||| Step 7 |||: set all location names to codes
     # 1º: verify the severity of the problem
     logger.debug(sorted(set(df_logs['location_name'].values)))
 
@@ -87,6 +98,7 @@ def main():
     df_logs = fix_country_columns(df_logs, columns=['location_name'])
     logger.debug(sorted(set(df_logs['location_name'].values)))
 
+    # ||| Step 8 |||: merge duplicated columns
     # Verify the existence of duplicated columns on the DataFrames
     # pprint(sorted(set(df_bg.columns)))
     # pprint(sorted(set(df_logs.columns)))
@@ -98,6 +110,9 @@ def main():
         df=df_logs,
         column_a='questions_134999_where_are_you_eating_at_the_moment',
         column_b='questions_134999_where_are_you_eating_at_the_moment.1')
+
+    # ||| Step 9 |||: merge duplicated values on specific columns
+    # TODO
 
     logger.info('The end.')
 

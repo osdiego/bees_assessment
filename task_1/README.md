@@ -11,7 +11,7 @@ In this task is requested to create a data pipeline to do some cleaning on CSV f
 - A data pipeline is not exactly what was build. The created script is "simply" a set of actions to understand and clean the data;
 - A pipeline would probably:
   - save different files along the process to avoid losing the progress during breaking actions;
-  - use a efficient file format to store this data (e.g. parquet), with proper partitioning;
+  - use a efficient file format to store this data (e.g. parquet), with proper partitioning according to the amount of data;
   - have some better error handling to detect when the process brakes;
   - have a recovery strategy;
   - be triggered recurrently using specific source and target file locations.
@@ -56,7 +56,7 @@ In this task is requested to create a data pipeline to do some cleaning on CSV f
   3. Put a person in multiple existent age groups (which would make it harder to know the original range);
   4. Create sub groups and put a person in multiple shorter age groups (e.g. [25-34] would be [25, 26-34], [26-35] would be [26-34, 35], [35-44] would be [35, 36-44], etc.) - probably the best presented solution;
 - The country code used on the dataset for United Kingdom was **UK**, but that is not the ISO code for the country, so it was updated to **GB**;
-- The duplicated column on the logs dataset is called "**l**evel2dish_coded", not "**L**evel2dish_coded".
+- Both "**l**evel2dish_coded" and "**q**uestions_135633_and_who_are_you_sharing_your_home_with" column names are capitalized in the docx, but not in the datasets.
 
 ## Dictionary of abbreviations
 
