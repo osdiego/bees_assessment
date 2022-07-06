@@ -15,6 +15,7 @@ In this task is requested to create a data pipeline to do some cleaning on CSV f
   - have some better error handling to detect when the process brakes;
   - have a recovery strategy;
   - be triggered recurrently using specific source and target file locations.
+- Additional actions could be performed to clean this data deeper, like ensure that a column does not have similar values, like "A / B" and "A /B", where the difference is only the format of the values (the space in this case), or even convert the values in the column **questions_224112_149402_210209_including_yourself_how_many_people_do_you_share_your_home_with** to be all in the same format (e.g. transform "four" into "4"), but it would be just a matter of putting more hours into it and not necessarily demonstrate my skills, so this kind of additional operation won't be performed.
 
 ## Instructions to run the code
 
@@ -22,11 +23,15 @@ In this task is requested to create a data pipeline to do some cleaning on CSV f
 
 ## Deliverables
 
-- A single python file with all the code.
+- A Python file with the code of the treatment: [treatment.py](treatment.py);
+- A Python file with the functions created to do the cleaning: [helpers.py](helpers.py);
+- A JSON file with some helping metadata: [list_like_columns_map.json](list_like_columns_map.json);
+- Dummy log file, containing the logs of some executions: [task_1.log](task_1.log);
+- The final datasets after all the cleaning: [output/background_dataset.xlsx](output/background_dataset.xlsx), and [output/logs_dataset.xlsx](output/logs_dataset.xlsx).
 
 ## Planed / executed actions
 
-### Acquire knowledge of the challenge by cleaning the files and comparing its structure with the information of the docx
+### Acquire knowledge of the challenge by cleaning the files and comparing its structure with the information on the docx
 
 - Read files using pandas;
 - Compare the headers of the files (result: background schemas have only the difference in the map, log schemas are the same).
@@ -48,7 +53,6 @@ In this task is requested to create a data pipeline to do some cleaning on CSV f
 - The columns in the mapping file are actually switched:
   - "Project 1 Question" should be "Project 2 Question";
   - "Project 2 Question" should be "Project 1 Question".
-- The order of the columns is not always the same, so they all were sorted to guarantee proper comparison.
 - The project 2 was used as baseline to set the name of the final columns as the docx says it has the most recent data (what suggests that these are the right names to be used, despite the questions identifiers of the different columns being higher on the project 1 file)
 - Mismatched user age groups -> there is no right way of cleaning it, at least not that I'm aware of. A few possible (not optimal) solutions were found, but a final decision would include some discussion with the team, so **this topic will not have a solution implemented**. The possible solutions found are:
   1. Delete some age groups and set the rows that use these deleted groups to a most common overlapping age group, what would possibly put a person in the wrong age group;

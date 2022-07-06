@@ -1,0 +1,19 @@
+{
+    "logs": [
+        "questions_135005_who_are_you_with",
+        "questions_135004_what_else_if_anything_are_you_doing_while_eating_your_food_for_example_are_you_also_watching_tv_checking_social_media_cooking_etc_coded",
+        "level2dish_coded",
+        "questions_135019_what_are_the_main_reasons_that_you_chose_this_food_right_now_if_you_are_having_more_than_one_item_please_write_about_the_main_item_you_are_having_please_be_as_detailed_as_you_can_coded",
+        "questions_135020_what_other_food_if_any_did_you_consider_having_instead_coded"
+    ],
+    "background": [
+        "questions_135613_who_do_you_share_your_home_with",
+        "questions_134340_what_do_you_do_to_try_to_stay_healthy_tick_all_that_apply",
+        "questions_134341_what_drives_you_to_have_a_healthy_lifestyle_you_may_select_up_to_3",
+        "questions_134342_do_you_try_to_eat_or_drink_in_any_of_the_following_ways",
+        "questions_134344_which_of_the_following_steps_if_any_are_you_taking_to_eat_drink_more_healthily",
+        "questions_134348_which_types_of_exercise_do_you_enjoy_doing_tick_all_that_apply",
+        "questions_134356_do_you_do_any_of_the_following_to_help_you_sleep_tick_all_that_apply",
+        "questions_134357_and_do_you_try_to_avoid_certain_things_in_the_hour_before_you_go_to_sleep_tick_all_that_apply"
+    ]
+}

@@ -167,6 +167,8 @@ def merge_string_columns(
     local_df[column_a] = df[[column_a, column_b]].apply(
         merge_only_strings, axis=1)
 
+    local_df.drop([column_b], axis=1, inplace=True)
+
     return local_df
 
 
@@ -286,5 +288,55 @@ def clean_braces_insecure(df: pd.DataFrame, column: str) -> pd.DataFrame:
             s.strip().replace('{', '[').replace('}', ']')
         )
     )
+
+    return local_df
+
+
+def make_a_clean_stringified_list_insecure(string: str) -> str:
+    '''Clean a list-like string if it is indeed list-like, and if it is a simple
+    string return a list-like string with this initial string as its item. The
+    returned "list" has only unique values.
+
+    If the provided value is nan, return nan.
+
+    Args:
+        string (str): the string to clean
+
+    Returns:
+        str: the cleaned list-like string.
+    '''
+
+    if pd.isna(string):
+        return string
+
+    if not string.startswith('['):
+        string = json.dumps([string], ensure_ascii=False)
+
+    return clean_stringified_list_insecure(string)
+
+
+def remove_duplicated_values_insecure(
+    df: pd.DataFrame,
+    list_like_columns: list[str],
+) -> pd.DataFrame:
+    '''Creates a copy of the provided DataFrame, turning the values in each list
+    like columns unique
+
+    Args:
+        df (pd.DataFrame): the original DataFrame
+        list_like_columns (list[str]): the columns names to apply to cleaning
+
+    Returns:
+        pd.DataFrame: the DataFrame with the unique values
+
+    As it uses a method that makes use of the eval() method, it is also an
+    insecure method.
+    '''
+
+    local_df = df.copy()
+
+    for col in list_like_columns:
+        local_df[col] = local_df[col].apply(
+            make_a_clean_stringified_list_insecure)
 
     return local_df

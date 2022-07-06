@@ -19,7 +19,9 @@ The instructions to assess each of the tasks are on the README.md of the respect
 - The Python Docstrings style chosen for the project was the one from Google, as this is one of the simplest ones to read, but any other could be used in case of need;
 - Multiline statements usually ends with a comma so it is easier to see the difference in possible future Pull Requests;
 - The logging library was superficially used just to exemplify this best practice when it comes to logging on processes like data pipelines. Different from simple notebooks of prof of concepts, pipelines need to be handled carefully when it comes to logs, well handled, like setting the proper level of log per environment and configuring log file rotations;
-- A lot of error treatments, including the creation of special error classes, could be done, but for a matter of keeping the level of complexity on the assessment it was not developed deeply.
+- A lot of error treatments, including the creation of special error classes, could be done, but for a matter of keeping the level of complexity on the assessment it was not developed deeply;
+- Most of the time, at least inside the methods, creating a copy of the data is used as an approach to avoid messing up with the original variable unintentionally, but it could be developed in such a way to update the original object in place in case of need (something like pandas parameter "inplace=True");
+- Pandas is widely used in this project due its simplicity and the easy an fast way of handling small sets of data. For more complex / larger datasets, PySpark could be an option, or even transforming the data to another data structure to perform some operations (sometimes transforming the data into a Python dictionary and performing the operations on top of it are faster than working with Pandas DataFrames, the best data structure / tool to handle the problem will depend from case to case).
 
 ### Files / folders on the root of the repo
 

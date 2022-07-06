@@ -1,11 +1,13 @@
+import json
 import logging
 from pprint import pprint
 
 import pandas as pd
 
 from helpers import (clean_braces_insecure, clean_columns_values,
-                     clean_dict_column, concat_dataframes, fix_country_columns,
-                     merge_string_columns)
+                     clean_dict_column, clean_dict_column_insecure,
+                     concat_dataframes, fix_country_columns,
+                     merge_string_columns, remove_duplicated_values_insecure)
 
 
 def main():
@@ -19,11 +21,15 @@ def main():
     clean_columns = {c: c.strip() for c in df_bg_map}
     df_bg_map.rename(columns=clean_columns, inplace=True)
 
-    df_bg_1 = pd.read_csv(f'{assets_folder}project_1_background.csv')
-    df_bg_2 = pd.read_csv(f'{assets_folder}project_2_background.csv')
+    df_bg_1 = pd.read_csv(
+        f'{assets_folder}project_1_background.csv', index_col=0)
+    df_bg_2 = pd.read_csv(
+        f'{assets_folder}project_2_background.csv', index_col=0)
 
-    df_logs_1 = pd.read_csv(f'{assets_folder}project_1_logs.csv')
-    df_logs_2 = pd.read_csv(f'{assets_folder}project_2_logs.csv')
+    df_logs_1 = pd.read_csv(
+        f'{assets_folder}project_1_logs.csv', index_col=0)
+    df_logs_2 = pd.read_csv(
+        f'{assets_folder}project_2_logs.csv', index_col=0)
 
     # ||| Step 2 |||: check the difference between datasets
     # Verify the difference between the background df schemas
@@ -58,16 +64,16 @@ def main():
     # pprint(sorted(set(df_logs_1['level2dish_coded'].values)))
 
     # Extract the desired value from the column
-    df_logs_1 = clean_dict_column(df_logs_1, 'level2dish_coded')
+    df_logs_1 = clean_dict_column(df=df_logs_1, column='level2dish_coded')
     # What could be also achieved using the insecure method:
-    # df_logs_1 = clean_dict_column_insecure(df_logs_1, 'level2dish_coded', 'dish')
+    # df_logs_1 = clean_dict_column_insecure(df=df_logs_1, column='level2dish_coded', key='dish')
 
     # ||| Step 4 |||: solve problem on column "questions_135633_and_who_are_you_sharing_your_home_with"
     # check the real problem in the column
     column_135633 = 'questions_135633_and_who_are_you_sharing_your_home_with'
     # pprint(sorted(set(df_bg_1[column_135633].values)))
     # not all values has the brace problem, so the function created handles that
-    df_bg_1 = clean_braces_insecure(df_bg_1, column_135633)
+    df_bg_1 = clean_braces_insecure(df=df_bg_1, column=column_135633)
     # pprint(sorted(set(df_bg_1[column_135633].values)))
 
     # ||| Step 5 |||: merge DataFrames
@@ -95,7 +101,7 @@ def main():
     logger.debug(sorted(set(df_logs['location_name'].values)))
 
     # 2ª: fix the problem - small note on conversion UK -> GB as this is the ISO
-    df_logs = fix_country_columns(df_logs, columns=['location_name'])
+    df_logs = fix_country_columns(df=df_logs, columns=['location_name'])
     logger.debug(sorted(set(df_logs['location_name'].values)))
 
     # ||| Step 8 |||: merge duplicated columns
@@ -112,7 +118,30 @@ def main():
         column_b='questions_134999_where_are_you_eating_at_the_moment.1')
 
     # ||| Step 9 |||: merge duplicated values on specific columns
-    # TODO
+    '''
+    First is necessary to understand which columns will need to be cleaned,
+    and for that specific case, as it is going to be a massive cleaning,
+    discover dynamically which columns need it would not be a safe / optimal
+    choice, so the columns that needs the treatment were verified "simply" by
+    looking at the data and checking the ones that have an structure of a list.
+    The columns were then mapped and placed into an asset file.
+    '''
+    with open('./list_like_columns_map.json') as file:
+        list_like_columns_map = json.load(file)
+    # pprint(list_like_columns_map)
+
+    df_bg = remove_duplicated_values_insecure(
+        df=df_bg, list_like_columns=list_like_columns_map['background'])
+
+    df_logs = remove_duplicated_values_insecure(
+        df=df_logs, list_like_columns=list_like_columns_map['logs'])
+
+    # ||| Step 10 |||: save the DataFrames
+    '''Both DataFrames are too large to print nicely, so they're being saved as
+    XLSX for a better visualization - could be also saved as CSV, Parquet, etc.
+    '''
+    df_bg.to_excel('output/background_dataset.xlsx')
+    df_logs.to_excel('output/logs_dataset.xlsx')
 
     logger.info('The end.')
 
