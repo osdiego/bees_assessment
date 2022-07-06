@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sbees_diego_soares"
+version = "1.0.2"
+authors = [
+  { name="Diego Soares", email="osoaresdiego@gmail.com" },
+]
+description = "Package of the Streetbees Data Engineer - technical assessment."
+readme = "README.md"
+license = { file="LICENSE" }
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "pandas==1.4.3",
+    "pycountry==22.3.5",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/osdiego/bees_assessment"
