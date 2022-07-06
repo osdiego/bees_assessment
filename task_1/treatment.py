@@ -1,3 +1,9 @@
+'''
+The unused imports (pprint and clean_dict_column_insecure) were kept because
+there is some commented code that uses it, and it may be uncommented during
+the assessment.
+'''
+
 import json
 import logging
 from pprint import pprint

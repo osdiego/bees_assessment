@@ -7,7 +7,7 @@ In this task is requested to create a data pipeline to do some cleaning on CSV f
 ### Additional notes
 
 - For performance reasons, it is necessary to do some cleaning on the datasets before doing the merge, that is why the actions on the Task 1 script does not follow the order of the bullet points in the docx;
-- Most of the logic is being kept on the scrip for analysis, but not all, in an attempt to keep it as clear as possible and still give the opportunity for it to be properly assessed. Some **logger** and **pprint** statements are also being kept, sometimes commented out, to also make it easier to assess the code and the line of thinking;
+- Most of the logic is being kept on the scrip for analysis, but not all, in an attempt to keep it as clear as possible and still give the opportunity for it to be properly assessed. Some **logger** and **pprint** statements are also being kept, sometimes commented, to also make it easier to assess the code and the line of thinking;
 - A data pipeline is not exactly what was build. The created script is "simply" a set of actions to understand and clean the data;
 - A pipeline would probably:
   - save different files along the process to avoid losing the progress during breaking actions;

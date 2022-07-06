@@ -1,3 +1,4 @@
+ipykernel==6.15.0
 pandas==1.4.3
 pdoc3==0.10.0
 pycountry==22.3.5

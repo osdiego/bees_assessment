@@ -230,7 +230,7 @@ def clean_dict_column_insecure(
     local_df = df.copy()
 
     local_df[column] = local_df[column].apply(
-        lambda s: json.dumps(eval(s)[key]))
+        lambda s: json.dumps(eval(s)[key], ensure_ascii=False))
 
     return local_df
 
@@ -258,7 +258,7 @@ def clean_stringified_list_insecure(list_as_string: str) -> str:
         else:
             temp_set.add(value)
 
-    return json.dumps([v for v in temp_set if v])
+    return json.dumps([v for v in temp_set if v], ensure_ascii=False)
 
 
 def clean_braces_insecure(df: pd.DataFrame, column: str) -> pd.DataFrame:
