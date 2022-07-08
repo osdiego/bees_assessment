@@ -132,7 +132,7 @@ def main():
     looking at the data and checking the ones that have an structure of a list.
     The columns were then mapped and placed into an asset file.
     '''
-    with open('./list_like_columns_map.json') as file:
+    with open(f'{assets_folder}list_like_columns_map.json') as file:
         list_like_columns_map = json.load(file)
     # pprint(list_like_columns_map)
 
