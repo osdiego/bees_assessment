@@ -1,4 +1,8 @@
+./task_2/package/dist/sbees-1.0b1-py3-none-any.whl
+build==0.8.0
+coverage==6.4.1
 ipykernel==6.15.0
 pandas==1.4.3
 pdoc3==0.10.0
 pycountry==22.3.5
+pytest==7.1.2

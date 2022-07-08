@@ -32,7 +32,7 @@ The instructions to assess each of the tasks are on the README.md of the respect
 - [task_3](task_3): all the code and additional files for the **Task 3 – Demonstration of the package**;
 - [.gitignore](.gitignore): all the files and patterns to be ignored on commits (automatically generated on repo creation);
 - [LICENSE](LICENSE): the license (MIT) of the repo (automatically generated on repo creation);
-- [README.md](README.md): the README file with the basic information regarding the repo (another README files can be found inside the folders of each task);
+- [README.md](README.md): the README file with the basic information regarding the repo (other README files can be found inside the folders of each task);
 - [requirements.txt](requirements.txt): all the external packages necessary to run the scripts in this repo.
 
 ## Instructions to be able to run the code

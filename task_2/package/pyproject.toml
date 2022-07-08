@@ -1,10 +1,11 @@
+# Build and project settings
 [build-system]
 requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "sbees_diego_soares"
-version = "1.0.2"
+name = "sbees"
+version = "1.0b1"
 authors = [
   { name="Diego Soares", email="osoaresdiego@gmail.com" },
 ]
@@ -24,3 +25,29 @@ dependencies = [
 
 [project.urls]
 "Homepage" = "https://github.com/osdiego/bees_assessment"
+
+# Unit tests settings
+## Pytest
+[tool.pytest.ini_options]
+markers = "unittest: marks tests as unit tests"
+addopts = "-v -m unittest -vv"
+
+## Coverage
+[tool.coverage.run]
+command_line = "-m pytest"
+data_file = "test/coverage/.data"
+include = ["src/*"]
+omit =[
+    "*__init__.py",
+    "test/conftest.py",
+]
+branch = true
+
+[tool.coverage.report]
+skip_empty = true
+fail_under = 80
+precision = 2
+
+[tool.coverage.json]
+output = "test/coverage/report.json"
+pretty_print = true

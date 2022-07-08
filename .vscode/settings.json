@@ -1,12 +1,16 @@
 {
     "cSpell.words": [
+        "addopts",
         "colwidth",
+        "conftest",
         "dataframes",
         "Docstrings",
         "levelname",
         "pdoc",
         "pycountry",
         "pytest",
+        "sbees",
+        "setuptools",
         "Streetbees",
         "TODOS"
     ]
