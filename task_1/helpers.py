@@ -258,7 +258,9 @@ def clean_stringified_list_insecure(list_as_string: str) -> str:
         else:
             temp_set.add(value)
 
-    return json.dumps([v for v in temp_set if v], ensure_ascii=False)
+    sorted_list = sorted([v for v in temp_set if v])
+    sorted_string = json.dumps(sorted_list, ensure_ascii=False)
+    return sorted_string
 
 
 def clean_braces_insecure(df: pd.DataFrame, column: str) -> pd.DataFrame:
@@ -309,10 +311,14 @@ def make_a_clean_stringified_list_insecure(string: str) -> str:
     if pd.isna(string):
         return string
 
+    # This meas that the original string is not a list-like string
     if not string.startswith('['):
+        # an it should be
         string = json.dumps([string], ensure_ascii=False)
 
-    return clean_stringified_list_insecure(string)
+    string = clean_stringified_list_insecure(string)
+
+    return string
 
 
 def remove_duplicated_values_insecure(

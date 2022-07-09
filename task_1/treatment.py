@@ -17,7 +17,11 @@ from helpers import (clean_braces_insecure, clean_columns_values,
 
 
 def main():
-    # ||| Step 1 |||: read csv files into pandas DataFrames to better understanding
+    logger.info('Starting..')
+
+    # ||| Step 1 |||
+    logger.info(
+        'Step 1: read csv files into pandas DataFrames to better understanding')
     # To run the script inside the task_1 folder
     assets_folder = '../assets/'
     # to run it directly on the root folder
@@ -37,7 +41,8 @@ def main():
     df_logs_2 = pd.read_csv(
         f'{assets_folder}project_2_logs.csv', index_col=0)
 
-    # ||| Step 2 |||: check the difference between datasets
+    # ||| Step 2 |||
+    logger.info('Step 2: check the difference between datasets')
     # Verify the difference between the background df schemas
     is_bg_schemas_equal = sorted(list(df_bg_1)) == sorted(list(df_bg_2))
     logger.debug(
@@ -63,7 +68,8 @@ def main():
     is_logs_schemas_equal = sorted(list(df_logs_1)) == sorted(list(df_logs_2))
     logger.debug(f'Logs schemas are equal? Answer: {is_logs_schemas_equal}')
 
-    # ||| Step 3 |||: solve problem on column "level2dish_coded"
+    # ||| Step 3 |||
+    logger.info('Step 3: solve problem on column "level2dish_coded"')
     '''For performance reasons, it is necessary to do some cleaning on the
     datasets before doing the merge'''
     # Check the real problem in the column formatted as dictionary
@@ -74,7 +80,9 @@ def main():
     # What could be also achieved using the insecure method:
     # df_logs_1 = clean_dict_column_insecure(df=df_logs_1, column='level2dish_coded', key='dish')
 
-    # ||| Step 4 |||: solve problem on column "questions_135633_and_who_are_you_sharing_your_home_with"
+    # ||| Step 4 |||
+    logger.info(
+        'Step 4: solve problem on column "questions_135633_and_who_are_you_sharing_your_home_with"')
     # check the real problem in the column
     column_135633 = 'questions_135633_and_who_are_you_sharing_your_home_with'
     # pprint(sorted(set(df_bg_1[column_135633].values)))
@@ -82,14 +90,16 @@ def main():
     df_bg_1 = clean_braces_insecure(df=df_bg_1, column=column_135633)
     # pprint(sorted(set(df_bg_1[column_135633].values)))
 
-    # ||| Step 5 |||: merge DataFrames
+    # ||| Step 5 |||
+    logger.info('Step 5: merge DataFrames')
     # the project 2 columns will be used as final column names
     map_bg_cols = dict(zip(prj_1_cols, prj_2_cols))
     df_logs = concat_dataframes(df1=df_logs_1, df2=df_logs_2)
     df_bg = concat_dataframes(
         df1=df_bg_1, df2=df_bg_2, rename_cols=map_bg_cols)
 
-    # ||| Step 6 |||: fix genders spelt / capitalized differently
+    # ||| Step 6 |||
+    logger.info('Step 6: fix genders spelt / capitalized differently')
     col_gender = 'questions_135556_what_is_your_gender'
     df_bg = clean_columns_values(df=df_bg, columns=[col_gender])
 
@@ -102,7 +112,8 @@ def main():
         df=df_bg, columns=[col_gender], replaces=map_to_replace)
     logger.debug(set(df_bg[col_gender].values))
 
-    # ||| Step 7 |||: set all location names to codes
+    # ||| Step 7 |||
+    logger.info('Step 7: set all location names to codes')
     # 1º: verify the severity of the problem
     logger.debug(sorted(set(df_logs['location_name'].values)))
 
@@ -110,7 +121,8 @@ def main():
     df_logs = fix_country_columns(df=df_logs, columns=['location_name'])
     logger.debug(sorted(set(df_logs['location_name'].values)))
 
-    # ||| Step 8 |||: merge duplicated columns
+    # ||| Step 8 |||
+    logger.info('Step 8: merge duplicated columns')
     # Verify the existence of duplicated columns on the DataFrames
     # pprint(sorted(set(df_bg.columns)))
     # pprint(sorted(set(df_logs.columns)))
@@ -123,7 +135,8 @@ def main():
         column_a='questions_134999_where_are_you_eating_at_the_moment',
         column_b='questions_134999_where_are_you_eating_at_the_moment.1')
 
-    # ||| Step 9 |||: merge duplicated values on specific columns
+    # ||| Step 9 |||
+    logger.info('Step 9: merge duplicated values on specific columns')
     '''
     First is necessary to understand which columns will need to be cleaned,
     and for that specific case, as it is going to be a massive cleaning,
@@ -142,14 +155,13 @@ def main():
     df_logs = remove_duplicated_values_insecure(
         df=df_logs, list_like_columns=list_like_columns_map['logs'])
 
-    # ||| Step 10 |||: save the DataFrames
-    '''Both DataFrames are too large to print nicely, so they're being saved as
-    XLSX for a better visualization - could be also saved as CSV, Parquet, etc.
-    '''
-    df_bg.to_excel('output/background_dataset.xlsx')
-    df_logs.to_excel('output/logs_dataset.xlsx')
+    # ||| Step 10 |||
+    logger.info('Step 10: save the DataFrames')
+    # Could be also saved as XLSX, Parquet, etc.
+    df_bg.to_csv('output/background_dataset.csv')
+    df_logs.to_csv('output/logs_dataset.csv')
 
-    logger.info('The end.')
+    logger.info('Finished with success.')
 
 
 # As best practice and to avoid running code unintentionally

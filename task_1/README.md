@@ -25,9 +25,9 @@ In this task is requested to create a data pipeline to do some cleaning on CSV f
 
 - A Python file with the code of the treatment: [treatment.py](treatment.py);
 - A Python file with the functions created to do the cleaning: [helpers.py](helpers.py);
-- A JSON file with some helping metadata: [list_like_columns_map.json](list_like_columns_map.json);
+- A JSON file with some helping metadata: [list_like_columns_map.json](../assets/list_like_columns_map.json);
 - Dummy log file, containing the logs of some executions: [task_1.log](task_1.log);
-- The final datasets after all the cleaning: [output/background_dataset.xlsx](output/background_dataset.xlsx), and [output/logs_dataset.xlsx](output/logs_dataset.xlsx).
+- The final datasets after all the cleaning: [background_dataset.csv](output/background_dataset.csv), and [logs_dataset.csv](output/logs_dataset.csv).
 
 ## Planed / executed actions
 
