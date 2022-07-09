@@ -8,15 +8,15 @@ In this task is requested to create a package with the functions that were built
 
 * The package could have being made available on PyPi, but was chosen not to due to the request to not make things public;
 * The documentation of the package was built using pdoc3 (Python package already listed in the requirements file);
-To generate an HTML file automatically from the Docstrings of the package (already done, see [documentation](documentation)), run the following inside the **task_2** folder:
-  * `pdoc --html --output-dir documentation package/src/sbees`
-* The settings of the unit tests were all set on [pyproject.toml](pyproject.toml).
+* To generate the correspondent HTML files automatically from the Docstrings of the package (already done, see [documentation](documentation)), run the following inside the **task_2** folder:
+  * `pdoc --html --output-dir documentation package/src/sbees --force`
+* The settings of the unit tests were all set on [pyproject.toml](package/pyproject.toml).
 
 ## Instructions to run the code
 
-* The package was built locally and its [wheel](task_2/package/dist/sbees-1.0b1-py3-none-any.whl) is already being provided (if you already installed the requirements, it is already installed), and to build it again you can run the following command inside **task_2/package** folder:
+* The package was built locally and its [wheel](package/dist/sbees-1.0b1-py3-none-any.whl) is already being provided (if you already installed the requirements, it is already installed), and to build it again you can run the following command inside **task_2/package** folder:
   * `py -m build`
-* To run the unit tests, show brief results on console and save the report to [report.json](task_2/package/test/coverage/report.json), run the following inside the **task_2/package** folder:
+* To run the unit tests, show brief results on console and save the report to [report.json](package/test/coverage/report.json), run the following inside the **task_2/package** folder:
   * `coverage run & coverage json`
 
 ## Deliverables
