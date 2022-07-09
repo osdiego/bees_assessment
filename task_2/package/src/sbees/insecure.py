@@ -1,4 +1,5 @@
 import json
+from typing import Any
 
 import pandas as pd
 
@@ -33,7 +34,10 @@ def clean_dict_column(
     return local_df
 
 
-def clean_stringified_list(list_as_string: str) -> str:
+def clean_stringified_list(
+    list_as_string: str,
+    return_if_empty: Any = '[]',
+) -> str:
     '''Creates a copy of the provided stringified list, where the elements are
     the original ones if they are not lists and the elements inside the elements
     if the elements itself are lists. It also remove elements that are empty
@@ -41,9 +45,12 @@ def clean_stringified_list(list_as_string: str) -> str:
 
     Args:
         list_as_string (str): the stringified list to clean
+        return_if_empty (Any, optional): the value to return in case the list is
+            empty. Defaults to a stringified empty list.
 
     Returns:
-        str: the cleaned copy of the original string
+        Any: the cleaned copy of the original string or the specified value in
+            case it generates an empty list
 
     DISCLAIMER: This is considered a not secure method because it uses the
     eval() method, that tries to turn any string into Python code, which is
@@ -61,7 +68,12 @@ def clean_stringified_list(list_as_string: str) -> str:
         else:
             temp_set.add(value)
 
-    return json.dumps([v for v in temp_set if v], ensure_ascii=False)
+    sorted_list = sorted([v for v in temp_set if v])
+    if sorted_list:
+        sorted_string = json.dumps(sorted_list, ensure_ascii=False)
+    else:
+        sorted_string = return_if_empty
+    return sorted_string
 
 
 def clean_braces(df: pd.DataFrame, column: str) -> pd.DataFrame:
@@ -103,6 +115,9 @@ def make_a_clean_stringified_list(string: str) -> str:
     Args:
         string (str): the string to clean
 
+    Raises:
+        ValueError: if the provided "string" is not of type string nor pd.NA
+
     Returns:
         str: the cleaned list-like string.
 
@@ -112,13 +127,20 @@ def make_a_clean_stringified_list(string: str) -> str:
     non-trusted dataset.
     '''
 
-    if pd.isna(string):
-        return string
+    # This meas that the original string is not a list-like string
+    try:
+        if not string.startswith('['):
+            # an it should be
+            string = json.dumps([string], ensure_ascii=False)
+    except AttributeError:
+        if pd.isna(string):
+            return string
+        else:
+            raise ValueError('The provided "string" argument is not a string.')
 
-    if not string.startswith('['):
-        string = json.dumps([string], ensure_ascii=False)
+    string = clean_stringified_list(string)
 
-    return clean_stringified_list(string)
+    return string
 
 
 def remove_duplicated_values(
@@ -144,7 +166,6 @@ def remove_duplicated_values(
     local_df = df.copy()
 
     for col in list_like_columns:
-        local_df[col] = local_df[col].apply(
-            make_a_clean_stringified_list)
+        local_df[col] = local_df[col].apply(make_a_clean_stringified_list)
 
     return local_df

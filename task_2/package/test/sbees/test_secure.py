@@ -2,11 +2,6 @@ import pytest
 from src.sbees.secure import format_country
 
 
-@pytest.fixture
-def ccc() -> str:
-    return '["Male", "Female"]'
-
-
 @pytest.mark.parametrize(
     ('input, expected, format'),
     [
