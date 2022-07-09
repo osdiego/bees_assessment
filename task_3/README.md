@@ -2,17 +2,12 @@
 
 ## Short description of the task
 
-In this task is requested to demonstrate the package create on ***Task 2*** by creating a python script to treat the same data treated in ***Task 1***.
-
-## Instructions to run the code
-
-TODO
+In this task is requested to demonstrate the package create on ***Task 2*** by creating a Python script or a Jupyter notebook to treat the same data treated in ***Task 1***.
 
 ## Deliverables
 
-- Python script
-- Description on how to run it
+- Jupyter notebook.
 
-## Planed actions
+## Planed / executed actions
 
-- Create a python script similar of the ***Task 1***, but using the package
+- Create a Jupyter notebook doing basically what was done in ***Task 1***, but using the package created on ***Task 2***.
